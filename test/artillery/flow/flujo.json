@@ -1,0 +1,87 @@
+{
+  "aggregate": {
+    "counters": {
+      "vusers.created_by_name.login, create & read a product & singout": 200,
+      "vusers.created": 200,
+      "http.requests": 200,
+      "plugins.metrics-by-endpoint./api/auth/login.errors.ECONNREFUSED": 200,
+      "errors.ECONNREFUSED": 200,
+      "vusers.failed": 200
+    },
+    "rates": {
+      "http.request_rate": 10
+    },
+    "firstCounterAt": 1747098445514,
+    "lastCounterAt": 1747098465069,
+    "firstMetricAt": 1747098445514,
+    "lastMetricAt": 1747098465069,
+    "period": 1747098460000,
+    "summaries": {},
+    "histograms": {}
+  },
+  "intermediate": [
+    {
+      "counters": {
+        "vusers.created_by_name.login, create & read a product & singout": 48,
+        "vusers.created": 48,
+        "http.requests": 48,
+        "plugins.metrics-by-endpoint./api/auth/login.errors.ECONNREFUSED": 48,
+        "errors.ECONNREFUSED": 48,
+        "vusers.failed": 48
+      },
+      "rates": {
+        "http.request_rate": 10
+      },
+      "http.request_rate": null,
+      "firstCounterAt": 1747098445514,
+      "lastCounterAt": 1747098449942,
+      "firstMetricAt": 1747098445514,
+      "lastMetricAt": 1747098449942,
+      "period": "1747098440000",
+      "summaries": {},
+      "histograms": {}
+    },
+    {
+      "counters": {
+        "vusers.created_by_name.login, create & read a product & singout": 100,
+        "vusers.created": 100,
+        "http.requests": 100,
+        "plugins.metrics-by-endpoint./api/auth/login.errors.ECONNREFUSED": 100,
+        "errors.ECONNREFUSED": 100,
+        "vusers.failed": 100
+      },
+      "rates": {
+        "http.request_rate": 10
+      },
+      "http.request_rate": null,
+      "firstCounterAt": 1747098450001,
+      "lastCounterAt": 1747098459942,
+      "firstMetricAt": 1747098450001,
+      "lastMetricAt": 1747098459942,
+      "period": "1747098450000",
+      "summaries": {},
+      "histograms": {}
+    },
+    {
+      "counters": {
+        "vusers.created_by_name.login, create & read a product & singout": 52,
+        "vusers.created": 52,
+        "http.requests": 52,
+        "plugins.metrics-by-endpoint./api/auth/login.errors.ECONNREFUSED": 52,
+        "errors.ECONNREFUSED": 52,
+        "vusers.failed": 52
+      },
+      "rates": {
+        "http.request_rate": 10
+      },
+      "http.request_rate": null,
+      "firstCounterAt": 1747098460001,
+      "lastCounterAt": 1747098465069,
+      "firstMetricAt": 1747098460001,
+      "lastMetricAt": 1747098465069,
+      "period": "1747098460000",
+      "summaries": {},
+      "histograms": {}
+    }
+  ]
+}
