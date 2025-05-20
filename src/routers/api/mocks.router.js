@@ -19,17 +19,17 @@ class MocksRouter extends CustomRouter {
     });
     this.create("/generateData", ["PUBLIC"], async (req, res) => {
       const { users = 0, pets = 0 } = req.body;
-      
+
       for (let i = 0; i < users; i++) {
         const user = createMockUser();
         await usersService.createOne(user);
       }
-      
+
       for (let i = 0; i < pets; i++) {
         const pet = createMockPet();
-        await petsService.createOne(pet); 
+        await petsService.createOne(pet);
       }
-      
+
       res.status(201).json({
         message: "Datos generados exitosamente",
         users,
@@ -44,14 +44,20 @@ class MocksRouter extends CustomRouter {
       }
       res.status(200).json(pets);
     });
-
     this.read("/products/:n", ["PUBLIC"], async (req, res) => {
       const { n } = req.params;
+      const products = [];
+
       for (let index = 0; index < n; index++) {
         const one = createMockProduct();
-        await productsService.createOne(one);
+        const created = await productsService.createOne(one);
+        products.push(created);
       }
-      res.json201({ mocks: n });
+
+      res.status(201).json({
+        message: `Se generaron ${n} productos mock`,
+        products,
+      });
     });
     this.read("/users/:n", ["PUBLIC"], async (req, res) => {
       const { n } = req.params;
