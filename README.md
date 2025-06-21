@@ -58,7 +58,7 @@ npm run dev
 - **Modo test:**
 
 ```bash
-npm test
+npm run test
 ```
 
 ## Scripts npm disponibles
