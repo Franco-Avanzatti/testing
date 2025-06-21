@@ -18,11 +18,20 @@ const ready = async () => {
 };
 
 if (argvs.mode !== "test" && cluster.isPrimary) {
-  const numberOfProcess = cpus().length;
+  // Limitar a máximo 2 procesos workers (o el número que prefieras)
+  const maxWorkers = 2;
+  const numberOfProcess = Math.min(cpus().length, maxWorkers);
   logger.INFO(`🔁 Iniciando clustering con ${numberOfProcess} procesos`);
-  for (let i = 1; i <= numberOfProcess; i++) {
+
+  for (let i = 0; i < numberOfProcess; i++) {
     cluster.fork();
   }
+
+  cluster.on("exit", (worker, code, signal) => {
+    logger.INFO(`Worker ${worker.process.pid} murió. Código: ${code}, señal: ${signal}`);
+    // Opcional: reiniciar worker
+    // cluster.fork();
+  });
 } else {
   app.listen(port, ready);
 }
