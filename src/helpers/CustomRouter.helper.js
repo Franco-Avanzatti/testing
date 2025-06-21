@@ -1,6 +1,6 @@
 import { Router } from "express";
 import setResponses from "../middlewares/setResponses.mid.js";
-import setupPolicies from "../middlewares/setPolicies.mid.js";
+import setupPolicies  from "../middlewares/setupPolicies.mid.js";
 
 class CustomRouter {
   constructor() {
@@ -18,16 +18,16 @@ class CustomRouter {
     });
   create = (path, policies, ...midds) =>
     this.router.post(path, setupPolicies(policies), this.setMiddlewares(midds));
+
   read = (path, policies, ...midds) =>
     this.router.get(path, setupPolicies(policies), this.setMiddlewares(midds));
+
   update = (path, policies, ...midds) =>
     this.router.put(path, setupPolicies(policies), this.setMiddlewares(midds));
+
   destroy = (path, policies, ...midds) =>
-    this.router.delete(
-      path,
-      setupPolicies(policies),
-      this.setMiddlewares(midds)
-    );
+    this.router.delete(path, setupPolicies(policies), this.setMiddlewares(midds));
+
   use = (path, ...midds) => this.router.use(path, this.setMiddlewares(midds));
 }
 

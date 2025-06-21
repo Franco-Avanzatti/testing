@@ -1,0 +1,188 @@
+openapi: 3.1.0
+info:
+  title: CoderCommerce API
+  description: Documentación de la API de carritos
+  version: "1.0.0"
+components:
+  schemas:
+    Cart:
+      type: object
+      required:
+        - product_id
+        - user_id
+      properties:
+        _id:
+          type: string
+          format: uuid
+        product_id:
+          type: string
+          format: uuid
+          description: ID del producto referenciado en el carrito
+        user_id:
+          type: string
+          format: uuid
+          description: ID del usuario dueño del carrito
+        quantity:
+          type: integer
+          description: Cantidad del producto en el carrito
+          default: 1
+          minimum: 1
+        state:
+          type: string
+          enum: [reserved, paid, delivered]
+          description: Estado del producto en el carrito
+          default: reserved
+        createdAt:
+          type: string
+          format: date-time
+        updatedAt:
+          type: string
+          format: date-time
+      example:
+        _id: 663f52c7ab47c1055607c123
+        product_id: 663f52c7ab47c1055607c456
+        user_id: 663f52c7ab47c1055607c789
+        quantity: 2
+        state: reserved
+        createdAt: 2025-06-09T10:15:30.000Z
+        updatedAt: 2025-06-09T10:15:30.000Z
+  securitySchemes:
+    cookieAuth:
+      type: apiKey
+      in: cookie
+      name: token
+paths:
+  /api/carts:
+    post:
+      summary: Agregar un producto al carrito
+      tags: [Cart]
+      security:
+        - cookieAuth: []
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              type: object
+              required:
+                - product_id
+                - quantity
+              properties:
+                product_id:
+                  type: string
+                  format: uuid
+                  description: ID del producto a agregar
+                quantity:
+                  type: integer
+                  description: Cantidad del producto
+                  minimum: 1
+              example:
+                product_id: 663f52c7ab47c1055607c456
+                quantity: 3
+      responses:
+        201:
+          description: Producto agregado al carrito
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Cart'
+        400:
+          description: Solicitud inválida
+    get:
+      summary: Obtener productos en carrito del usuario autenticado
+      tags: [Cart]
+      security:
+        - cookieAuth: []
+      responses:
+        200:
+          description: Lista de productos en el carrito
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  $ref: '#/components/schemas/Cart'
+        404:
+          description: Carrito vacío o no encontrado
+
+  /api/carts/{cart_id}:
+    parameters:
+      - name: cart_id
+        in: path
+        required: true
+        schema:
+          type: string
+          format: uuid
+          description: ID del ítem en el carrito
+    put:
+      summary: Actualizar cantidad de un producto en el carrito
+      tags: [Cart]
+      security:
+        - cookieAuth: []
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              type: object
+              required: [quantity]
+              properties:
+                quantity:
+                  type: integer
+                  minimum: 1
+                  description: Nueva cantidad del producto
+              example:
+                quantity: 5
+      responses:
+        200:
+          description: Cantidad actualizada
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Cart'
+        404:
+          description: Ítem no encontrado
+
+    delete:
+      summary: Eliminar un producto del carrito
+      tags: [Cart]
+      security:
+        - cookieAuth: []
+      responses:
+        200:
+          description: Producto eliminado del carrito
+        404:
+          description: Ítem no encontrado
+
+  /api/carts/{cart_id}/{state}:
+    parameters:
+      - name: cart_id
+        in: path
+        required: true
+        schema:
+          type: string
+          format: uuid
+          description: ID del ítem en el carrito
+      - name: state
+        in: path
+        required: true
+        schema:
+          type: string
+          enum: [reserved, paid, delivered]
+          description: Nuevo estado del ítem
+    put:
+      summary: Actualizar estado de un ítem del carrito
+      tags: [Cart]
+      security:
+        - cookieAuth: []
+      responses:
+        200:
+          description: Estado actualizado correctamente
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Cart'
+        400:
+          description: Estado inválido
+        404:
+          description: Ítem no encontrado

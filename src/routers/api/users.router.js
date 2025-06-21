@@ -7,11 +7,11 @@ class UsersRouter extends CustomRouter {
     this.init();
   }
   init = () => {
-    this.create("/", ["PUBLIC"], usersController.createOne);
-    this.read("/", ["ADMIN"], usersController.readAll);
-    this.read("/:id", ["USER", "ADMIN"], usersController.readById);
-    this.update("/:id", ["USER", "ADMIN"], usersController.updateById);
-    this.destroy("/:id", ["USER", "ADMIN"], usersController.destroyById);
+    this.create("/", ["PUBLIC" ,"ADMIN"], usersController.createOne);
+    this.read("/", ["ADMIN", "USER", "PUBLIC"], usersController.readAll);
+    this.read("/:id", ["USER", "ADMIN", "PUBLIC"], usersController.readById);
+    this.update("/:id", ["ADMIN"], usersController.updateById);
+    this.destroy("/:id", ["ADMIN"], usersController.destroyById);
   };
 }
 

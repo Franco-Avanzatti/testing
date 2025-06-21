@@ -1,0 +1,175 @@
+openapi: 3.1.0
+info:
+  title: CoderCommerce API
+  description: Documentación de la API de productos
+  version: "1.0.0"
+components:
+  schemas:
+    Product:
+      type: object
+      required:
+        - title
+        - description
+        - category
+        - price
+        - stock
+        - owner_id
+      properties:
+        title:
+          description: Nombre del producto a comercializar
+          type: string
+        description:
+          description: Breve descripción física del producto
+          type: string
+        category:
+          description: Rubro al que pertenece el producto
+          type: string
+        image:
+          description: Imagen representativa del producto (URL)
+          type: string
+          format: uri
+        price:
+          description: Cantidad de solares a pagar por el producto
+          type: number
+          format: float
+        stock:
+          description: Unidades disponibles del producto para vender
+          type: integer
+          minimum: 0
+        onsale:
+          description: Indica si el producto está en oferta
+          type: boolean
+          default: false
+        owner_id:
+          description: Identificación del dueño del producto (o empresa)
+          type: string
+          format: uuid
+      example:
+        title: Auriculares Inalambricos
+        description: Auriculares con cancelación de ruido y hasta 30 horas de batería.
+        category: Headphones
+        image: https://example.com/headphones.jpg
+        price: 79.99
+        stock: 150
+        onsale: true
+        owner_id: 683f52c7ab47c1055607c770
+  securitySchemes:
+    cookieAuth:
+      type: apiKey
+      in: cookie
+      name: token
+paths:
+  /api/products:
+    post:
+      summary: Crear un producto y agregarlo a la base de datos
+      tags:
+        - Product
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/Product'
+      security:
+        - cookieAuth: []
+      responses:
+        201:
+          description: Producto creado correctamente
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Product'
+        400:
+          description: Solicitud inválida
+    get:
+      summary: Obtener una lista de productos (puede incluir filtros)
+      tags:
+        - Product
+      responses:
+        200:
+          description: Lista de productos
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  $ref: '#/components/schemas/Product'
+  /api/products/{id}:
+    parameters:
+      - name: id
+        in: path
+        required: true
+        schema:
+          type: string
+          description: ID del producto
+    get:
+      summary: Obtener datos de un producto específico
+      tags:
+        - Product
+      responses:
+        200:
+          description: Datos del producto
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Product'
+        404:
+          description: Producto no encontrado
+    put:
+      summary: Actualizar datos de un producto existente
+      tags:
+        - Product
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              type: object
+              properties:
+                title:
+                  type: string
+                  description: Nombre actualizado del producto
+                category:
+                  type: string
+                  description: Categoría actualizada del producto
+                image:
+                  type: string
+                  format: uri
+                  description: URL de imagen actualizada
+                stock:
+                  type: integer
+                  minimum: 0
+                  description: Stock actualizado
+                onsale:
+                  type: boolean
+                  description: Estado de oferta actualizado
+              example:
+                title: Auriculares Inalambricos
+                category: Headphones
+                image: https://example.com/headphones.jpg
+                stock: 50
+                onsale: false
+      security:
+        - cookieAuth: []
+      responses:
+        200:
+          description: Producto actualizado correctamente
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Product'
+        400:
+          description: Solicitud inválida
+        404:
+          description: Producto no encontrado
+    delete:
+      summary: Eliminar un producto de la base de datos
+      tags:
+        - Product
+      security:
+        - cookieAuth: []
+      responses:
+        204:
+          description: Producto eliminado correctamente
+        404:
+          description: Producto no encontrado

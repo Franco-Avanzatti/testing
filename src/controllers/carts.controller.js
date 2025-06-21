@@ -1,19 +1,19 @@
-import cartsService from "../services/carts.service.js";
+import cartsService from "../services/cart.service.js";
 
 const addProductToCart = async (req, res) => {
-  const { _id } = req.user;
+  const { user_id } = req.user;
   const { product_id, quantity } = req.body;
   const response = await cartsService.addProductToCart({
     product_id,
-    user_id: _id,
+    user_id,
     quantity,
   });
   res.json201(response);
 };
 const readProductsFromUser = async (req, res) => {
-  const { _id } = req.user;
+  const { user_id } = req.user;
   const response = await cartsService.readProductsFromUser({
-    user_id: _id,
+    user_id,
     state: "reserved",
   });
   if (response.length > 0) {

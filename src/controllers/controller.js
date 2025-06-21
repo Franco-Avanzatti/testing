@@ -21,29 +21,25 @@ class Controller {
   readById = async (req, res) => {
     const { id } = req.params;
     const response = await this.service.readById(id);
-    if (!response) {
-      res.json404();
-    }
+    if (!response) return res.json404();
     res.json200(response);
   };
   updateById = async (req, res) => {
     const { id } = req.params;
     const data = req.body;
     const response = await this.service.updateById(id, data);
-    if (!response) {
-      res.json404();
-    }
+    if (!response) return res.json404();
     res.json200(response);
   };
   destroyById = async (req, res) => {
     const { id } = req.params;
     const response = await this.service.destroyById(id);
-    if (!response) {
-      res.json404();
-    }
+    if (!response) return res.json404();
     res.json200(response);
   };
-}
+
+};
+
 
 const productsController = new Controller(productsService);
 const usersController = new Controller(usersService);

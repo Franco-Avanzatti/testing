@@ -1,0 +1,141 @@
+components:
+  schemas:
+    User:
+      type: object
+      properties:
+        name:
+          description: Nombre del usuario
+          type: string
+        date:
+          description: Fecha de nacimiento del usuario
+          type: string
+          format: date
+        email:
+          description: Correo electrónico del usuario
+          type: string
+          format: email
+        password:
+          description: Contraseña para iniciar sesión del usuario
+          type: string
+        avatar:
+          description: Foto del usuario
+          type: string
+        role:
+          description: Rol que ocupa el usuario en el servidor
+          type: string
+          enum: [USER, ADMIN, PREM]
+      example:
+        name: Marcelo
+        date: 1998-01-08
+        email: marce@coder.com
+        password: pipi898
+        avatar: https://cdn-icons-png.flaticon.com/512/266/266033.png
+        role: ADMIN
+
+paths:
+  /api/users:
+    post:
+      tags:
+        - Users
+      summary: Crear un nuevo usuario
+      description: Requiere rol ADMIN
+      security:
+        - bearerAuth: []
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/User'
+      responses:
+        '201':
+          description: Usuario creado exitosamente
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/User'
+        '400':
+          description: Datos inválidos
+        '403':
+          description: No autorizado - Solo administradores
+
+  /api/users/{id}:
+    get:
+      tags:
+        - Users
+      summary: Obtener usuario por ID
+      security:
+        - bearerAuth: []
+      parameters:
+        - name: id
+          in: path
+          required: true
+          description: ID del usuario
+          schema:
+            type: string
+      responses:
+        '200':
+          description: Usuario encontrado
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/User'
+        '404':
+          description: Usuario no encontrado
+
+    put:
+      tags:
+        - Users
+      summary: Actualizar un usuario por ID
+      description: Requiere rol ADMIN
+      security:
+        - bearerAuth: []
+      parameters:
+        - name: id
+          in: path
+          required: true
+          description: ID del usuario
+          schema:
+            type: string
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/User'
+      responses:
+        '200':
+          description: Usuario actualizado correctamente
+        '404':
+          description: Usuario no encontrado
+        '403':
+          description: No autorizado - Solo administradores
+
+    delete:
+      tags:
+        - Users
+      summary: Eliminar un usuario por ID
+      description: Requiere rol ADMIN
+      security:
+        - bearerAuth: []
+      parameters:
+        - name: id
+          in: path
+          required: true
+          description: ID del usuario
+          schema:
+            type: string
+      responses:
+        '200':
+          description: Usuario eliminado correctamente
+        '404':
+          description: Usuario no encontrado
+        '403':
+          description: No autorizado - Solo administradores
+
+
+securitySchemes:
+  bearerAuth:
+    type: http
+    scheme: bearer
+    bearerFormat: JWT

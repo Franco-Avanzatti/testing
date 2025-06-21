@@ -4,6 +4,7 @@ import { Strategy as JwtStrategy, ExtractJwt } from "passport-jwt";
 import { usersManager } from "../dao/manager.mongo.js";
 import { compareHash, createHash } from "../helpers/hash.helper.js";
 import { createToken } from "../helpers/token.helper.js";
+import User from "../dao/models/users.model.js";
 
 passport.use(
   "register",
@@ -19,11 +20,13 @@ passport.use(
     async (req, email, password, done) => {
       try {
         const one = await usersManager.readBy({ email });
+
         if (one) {
           return done(null, null, { message: "Invalid credentials", statusCode: 401 });
         }
         req.body.password = createHash(password)
-        const user = await usersManager.create(req.body);
+        const user = await usersManager.createOne(req.body);
+
         done(null, user);
       } catch (error) {
         done(error);
@@ -38,10 +41,12 @@ passport.use(
     async (req, email, password, done) => {
       try {
         const user = await usersManager.readBy({ email });
+
         if (!user) {
           return done(null, null, { message: "Invalid credentials", statusCode: 401 });
         }
         const verifyPassword = compareHash(password, user.password);
+
         if (!verifyPassword) {
           return done(null, null, { message: "Invalid credentials", statusCode: 401 });
         }

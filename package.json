@@ -10,7 +10,15 @@
     "artillery-pocos": "artillery quick --count 500 --num 2 \"http://localhost:8080/api/sumar/pocos\" -o ./test/artillery/pocos.json",
     "artillery-muchos": "artillery quick --count 500 --num 2 \"http://localhost:8080/api/sumar/muchos\" -o ./test/artillery/muchos.json",
     "artillery-flujo": "artillery run ./test/artillery/flow/config.yaml -o ./test/artillery/flow/flujo.json",
-    "artillery-reporte": "artillery report ./test/artillery/flow/flujo.json"
+    "artillery-reporte": "artillery report ./test/artillery/flow/flujo.json",
+    "mocha": "mocha --exit ./test/mocha",
+    "chai": "mocha --exit ./test/chai",
+    "super": "cross-env MODE=test mocha --exit ./test/supertest",
+    "build-image": "docker build -t testing-node .",
+    "build-image-cluster": "docker build -t testing-node-cluster .",
+    "build-image-test": "docker build -t testing-node-test .",
+    "build-image-clean": "docker build -t testing-node-clean .",
+    "build-image-complete": "docker build -t testing-node-complete ."
   },
   "keywords": [],
   "author": "",
@@ -24,6 +32,7 @@
     "calculator-70435": "^2.2.2",
     "commander": "^13.1.0",
     "cookie-parser": "^1.4.7",
+    "cross-env": "^7.0.3",
     "dotenv": "^16.5.0",
     "express": "^5.1.0",
     "express-compression": "^1.0.2",
@@ -36,5 +45,10 @@
     "swagger-jsdoc": "^6.2.8",
     "swagger-ui-express": "^5.0.1",
     "winston": "^3.17.0"
+  },
+  "devDependencies": {
+    "chai": "^5.2.0",
+    "mocha": "^11.6.0",
+    "supertest": "^7.1.1"
   }
 }

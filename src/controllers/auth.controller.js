@@ -1,22 +1,24 @@
 const register = async (req, res) => {
-    const user = req.user;
-    res.json201(user);
+  const user = req.user;
+  res.json201(user);
+};
+const login = async (req, res) => {
+  const { token, user } = req;
+  const opts = {
+    httpOnly: true, // 🔒 Protege contra XSS
+    secure: process.env.NODE_ENV === "production", // 🔒 Solo HTTPS en prod
+    sameSite: "Strict", // 🔒 Protege contra CSRF
+    maxAge: 60 * 60 * 24 * 7 * 1000 // 7 días
   };
-  const login = async (req, res) => {
-    const { token, user } = req;
-    const opts = { maxAge: 60 * 60 * 24 * 7 * 1000 };
-    res.cookie("token", token, opts).json200(user, "Logged in");
-  };
-  const signout = (req, res) =>
-    res.clearCookie("token").json200(null, "Signed out");
-  const online = (req, res) => res.json200(null, "It's online");
-  const google = async (req, res) => {
-    const { token, user } = req;
-    const opts = { maxAge: 60 * 60 * 24 * 7 * 1000 };
-    res.cookie("token", token, opts).json200(user, "Logged in with google");
-  };
-  const failure = (req, res) => {
-    return res.json401();
-  };
-  
-  export { register, login, signout, online, google, failure };
+ res.cookie("token", token, opts).status(200).json({
+  response: user,
+  message: "Logged in",
+});
+};
+const logout = async (req, res) => {
+  res.clearCookie("token").status(200).json({
+    message: "Logout success"
+  });
+};
+
+export { register, login, logout};

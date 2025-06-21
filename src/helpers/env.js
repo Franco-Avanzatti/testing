@@ -1,10 +1,16 @@
 import { config } from "dotenv";
-import argsv from "./arguments.helper.js";
+import process from "process";
 
-const { mode } = argsv;
+// Extraemos el modo desde los argumentos de línea de comando, ej. --mode=test
+const args = process.argv;
+const modeArg = args.find(arg => arg.startsWith("--mode="));
+const mode = modeArg ? modeArg.split("=")[1] : "dev";
 
-const path = ".env." + mode;
+const path = `.env.${mode}`;
+
+// Carga el .env correspondiente según modo
 config({ path });
+
 
 const env = {
   PORT: process.env.PORT,

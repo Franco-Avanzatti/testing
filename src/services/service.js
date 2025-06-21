@@ -1,5 +1,5 @@
 import { productsManager, usersManager, petsManager } from "../dao/manager.mongo.js";
-import Manager from "../dao/manager.mongo.js";
+
 class Service {
   constructor(manager) {
     this.manager = manager;
